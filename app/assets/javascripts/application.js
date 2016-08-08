@@ -13,4 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require map-icons.min.js
+//= require main
 //= require_tree .

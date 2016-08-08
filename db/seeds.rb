@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+vehicleX = Vehicle.create(code:"0001",serial_number:"100002")
+vehicleY = Vehicle.create(code:"0002",serial_number:"100003")

@@ -15,5 +15,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require map-icons.min.js
+//= require moment.min.js
+//= require moment-with-locales.min.js
 //= require main
 //= require_tree .

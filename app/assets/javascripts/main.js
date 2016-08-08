@@ -9,24 +9,69 @@ var mapOptions1 = {
 
 $.get('vehicles/9.json',function(result){
   var linePoints = []
-  result.vehicle_localizations.forEach(function(element){
+
+  result.vehicle_localizations.forEach(function(element,index,array){
+    current = 0
+    if((index - 1 ) < 0) {
+      current = 1
+    } else {
+      current = index
+    }
+
+    diff = (index === 0)? "00:00:00": getDiffInHours(array[current].created_at,array[current - 1].created_at)
+
+    var infoContent = '<div class="">' +
+                      '<h3>' + result.code + 'index:' + (index + 1) + '</h3>' +
+                      '<h4>' + moment(element.created_at).format("DD-MM-YYYY HH:mm") +'</h4>' +
+                      '<h4> DIFF:' + diff +'</h4>' +
+                      '</div>';
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: infoContent
+    });
+
     var marker = new Marker({
        map: map1,
-       position:{lat: Number(element.lat), lng:Number(element.lng)},
+       position:{lat: Number(element.lat), lng: Number(element.lng)},
        title: result.code
      });
+
+     google.maps.event.addListener(marker, 'click', function() {
+         infoWindow.open(map1, marker);
+     });
+
     var obj = {lat: marker.position.lat(), lng: marker.position.lng()}
     linePoints.push(obj)
   });
 
+  drawPath(linePoints,map1);
+});
+
+var map1 = new google.maps.Map(mapElement1, mapOptions1);
+
+function drawPath(arrayPoints,map) {
+
   var vehiclePath = new google.maps.Polyline({
-    path: linePoints,
+    path: arrayPoints,
     geodesic: true,
     strokeColor: '#FF0000',
     strokeOpacity: 1.0,
     strokeWeight: 2
   });
-  vehiclePath.setMap(map1);
+
+  vehiclePath.setMap(map)
+
+}
+
+function getDiffInHours(end_time,start_time) {
+    return moment.utc(moment(end_time).diff(moment(start_time))).format("HH:mm:ss");
+}
+
+$.get('vehicles.json',function(result){
+  $select = $('#select-vehicle');
+  result.forEach(function(element){
+    $select.append($('<option>',{value:element.id,text:element.code}));
+  });
 });
 
-var map1 = new google.maps.Map(mapElement1, mapOptions1);
+// query = v.vehicle_localizations.where("created_at >= ? AND created_at <= ?","2016-08-08 20:13:00","2016-08-08 21:12:00")

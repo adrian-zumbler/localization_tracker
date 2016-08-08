@@ -13,4 +13,5 @@
  *= require_tree .
  *= require map-icons.min.css
  *= require_self
+ *= require style
  */

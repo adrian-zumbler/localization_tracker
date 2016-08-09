@@ -17,5 +17,6 @@
 //= require map-icons.min.js
 //= require moment.min.js
 //= require moment-with-locales.min.js
+//= reuire bootstrap-datepicker.js
 //= require main
 //= require_tree .

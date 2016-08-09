@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :vehicles do
     collection do
-      get 'vehiclesByFilert/:id', to: "vehicles#vehiclesByFilert"
+      post 'get_localizations/', to: "vehicles#get_localizations"
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

@@ -12,6 +12,7 @@
  *
  *= require_tree .
  *= require map-icons.min.css
+ *= require datepicker.css
  *= require_self
  *= require style
  */

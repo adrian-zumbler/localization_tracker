@@ -1,5 +1,6 @@
 class VehiclesController < ApplicationController
-  before_action :set_vehicle, only: [:show, :edit, :update, :destroy]
+  before_action :set_vehicle, only: [:show, :edit, :update, :destroy,:get_localizations]
+  protect_from_forgery :except => [:get_localizations]
 
   # GET /vehicles
   # GET /vehicles.json
@@ -61,11 +62,9 @@ class VehiclesController < ApplicationController
     end
   end
 
-  def vehiclesByFilert
-    @vehicles = Vehicle.all
-    respond_to do |format|
-      format.json { render json: @vehicles }
-    end
+  def get_localizations
+    @localizations = @vehicle.vehicle_localizations.where("created_at >= ? AND created_at <= ?",params[:start_time],params[:end_time])
+    render json: @localizations
   end
 
 

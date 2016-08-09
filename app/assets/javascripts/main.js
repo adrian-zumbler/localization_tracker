@@ -11,14 +11,14 @@ $.get('vehicles/9.json',function(result){
   var linePoints = []
 
   result.vehicle_localizations.forEach(function(element,index,array){
-    current = 0
+    current = 0;
     if((index - 1 ) < 0) {
-      current = 1
+      current = 1;
     } else {
-      current = index
+      current = index;
     }
 
-    diff = (index === 0)? "00:00:00": getDiffInHours(array[current].created_at,array[current - 1].created_at)
+    diff = (index === 0)? "00:00:00": getDiffInHours(array[current].created_at,array[current - 1].created_at);
 
     var infoContent = '<div class="">' +
                       '<h3>' + result.code + 'index:' + (index + 1) + '</h3>' +
@@ -67,11 +67,21 @@ function getDiffInHours(end_time,start_time) {
     return moment.utc(moment(end_time).diff(moment(start_time))).format("HH:mm:ss");
 }
 
+var $select = $('#select-vehicle');
+
 $.get('vehicles.json',function(result){
-  $select = $('#select-vehicle');
+
   result.forEach(function(element){
     $select.append($('<option>',{value:element.id,text:element.code}));
   });
 });
+
+$select.click(function(){
+  var vehicle_code = $(this).val();
+  console.log(vehicle_code);
+})
+
+
+
 
 // query = v.vehicle_localizations.where("created_at >= ? AND created_at <= ?","2016-08-08 20:13:00","2016-08-08 21:12:00")

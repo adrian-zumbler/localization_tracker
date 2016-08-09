@@ -61,6 +61,15 @@ class VehiclesController < ApplicationController
     end
   end
 
+  def vehiclesByFilert
+    @vehicles = Vehicle.all
+    respond_to do |format|
+      format.json { render json: @vehicles }
+    end
+  end
+
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_vehicle

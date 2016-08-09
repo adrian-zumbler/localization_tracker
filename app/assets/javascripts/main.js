@@ -9,6 +9,7 @@ var mapOptions1 = {
 
 var map1 = new google.maps.Map(mapElement1, mapOptions1);
 
+var aux_vehiclePath = null
 function drawPath(arrayPoints,map) {
 
   var vehiclePath = new google.maps.Polyline({
@@ -20,7 +21,13 @@ function drawPath(arrayPoints,map) {
   });
 
   vehiclePath.setMap(map)
+  aux_vehiclePath = vehiclePath;
+}
 
+function setMarkers(arrayMarkers,map) {
+  for (var i = 0; i < arrayMarkers.length; i++) {
+    arrayMarkers[i].setMap(map)
+  }
 }
 
 function getDiffInHours(end_time,start_time) {
@@ -36,15 +43,24 @@ $.get('vehicles.json',function(result){
   });
 });
 
+var aux_markers = [];
+var aux_linepoints = [];
+
 $select.click(function(){
+
   var vehicle_code = $(this).val();
+  var start_time = $("#txt-date").val() + " " + $("#start_time").val()
+  var end_time = $("#txt-date").val() + " " + $("#end_time").val()
+  console.log(start_time);
   $.post('vehicles/get_localizations/',{
-      id:vehicle_code,
-      start_time:"2016-08-08 20:13:00",
-      end_time:"2016-08-08 21:12:00"},
+      id: vehicle_code,
+      start_time: start_time,
+      end_time: end_time},
     function(result){
-      var linePoints = []
-      console.log(result)
+      if (aux_vehiclePath != null){aux_vehiclePath.setMap(null);}
+      setMarkers(aux_markers,null);
+      var markers = []
+      var linePoints = [];
       result.forEach(function(element,index,array){
         current = 0;
         if((index - 1 ) < 0) {
@@ -66,10 +82,13 @@ $select.click(function(){
         });
 
         var marker = new Marker({
-           map: map1,
+
            position:{lat: Number(element.lat), lng: Number(element.lng)},
            title: result.code
          });
+
+         markers.push(marker);
+
 
          google.maps.event.addListener(marker, 'click', function() {
              infoWindow.open(map1, marker);
@@ -78,10 +97,23 @@ $select.click(function(){
         var obj = {lat: marker.position.lat(), lng: marker.position.lng()}
         linePoints.push(obj)
       });
-
+      setMarkers(markers,map1);
       drawPath(linePoints,map1);
+      aux_markers =  markers;
+      aux_linepoints = linePoints;
     });
   })
+
+  $("#txt-date").datepicker({
+    format: "yyyy-mm-dd"
+  });
+
+  $(".clockpicker").clockpicker({
+    placement: 'bottom',
+    align: 'left',
+    autoclose: true,
+    'default': 'now'
+});
 
 
 

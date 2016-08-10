@@ -10,7 +10,6 @@ var mapOptions1 = {
 
 var map1 = new google.maps.Map(mapElement1, mapOptions1);
 
-
 var aux_vehiclePath = null
 function drawPath(arrayPoints,map) {
 

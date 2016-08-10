@@ -1,5 +1,6 @@
 var mapElement1 = document.getElementById('vehicles-map');
 
+
 var mapOptions1 = {
     zoom: 16,
     center: new google.maps.LatLng(17.953959, -102.175619),
@@ -8,6 +9,7 @@ var mapOptions1 = {
 };
 
 var map1 = new google.maps.Map(mapElement1, mapOptions1);
+
 
 var aux_vehiclePath = null
 function drawPath(arrayPoints,map) {
@@ -36,6 +38,20 @@ function getDiffInHours(end_time,start_time) {
 
 var $select = $('#select-vehicle');
 
+function currentLocalizations() {
+  $.get('vehicles.json',function(result){
+    var markers = []
+    result.forEach(function(element){
+      var marker = new Marker({
+         position:{lat: Number(element.last_lat), lng: Number(element.last_lng)},
+         title: element.code
+       });
+       markers.push(marker);
+    });
+    setMarkers(markers,map1);
+  });
+}
+
 $.get('vehicles.json',function(result){
 
   result.forEach(function(element){
@@ -43,15 +59,17 @@ $.get('vehicles.json',function(result){
   });
 });
 
+
+
 var aux_markers = [];
 var aux_linepoints = [];
 
-$select.click(function(){
+$("#btn-search").click(function(){
 
-  var vehicle_code = $(this).val();
+  var vehicle_code = $("#select-vehicle").val();
   var start_time = $("#txt-date").val() + " " + $("#start_time").val()
   var end_time = $("#txt-date").val() + " " + $("#end_time").val()
-  console.log(start_time);
+
   $.post('vehicles/get_localizations/',{
       id: vehicle_code,
       start_time: start_time,
@@ -82,7 +100,6 @@ $select.click(function(){
         });
 
         var marker = new Marker({
-
            position:{lat: Number(element.lat), lng: Number(element.lng)},
            title: result.code
          });

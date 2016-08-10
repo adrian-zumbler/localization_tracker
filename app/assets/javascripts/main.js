@@ -37,6 +37,8 @@ function getDiffInHours(end_time,start_time) {
 
 var $select = $('#select-vehicle');
 
+$("#btn-curren-localizations").click(currentLocalizations);
+
 function currentLocalizations() {
   $.get('vehicles.json',function(result){
     var markers = []

@@ -1,24 +1,12 @@
 <p id="notice"><%= notice %></p>
-
-<h1>Listing Vehicles</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @vehicles.each do |vehicle| %>
-      <tr>
-        <td><%= link_to 'Show', vehicle %></td>
-        <td><%= link_to 'Edit', edit_vehicle_path(vehicle) %></td>
-        <td><%= link_to 'Destroy', vehicle, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <div class="page-header">
+      <h1>Real Time Tracker</h1>
+    </div>
+  <div class="col-md-12">
+    <div class="form-group pull-right">
+      <button type="button" name="button" id="btn-curren-localizations" class="btn btn-primary" class="form-control">Update</button>
+    </div>
+  </div>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1Gg_rgvsutHRAJ2PHdKG85csmonHURjE"></script>
 <div class="col-md-12">
   <div id="vehicles-map" style="width:100%; height:500px;">

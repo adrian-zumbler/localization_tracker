@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   resources :vehicles do
     collection do
-      post 'get_localizations/', to: "vehicles#get_localizations"
+      post 'get_localizations/', to: 'vehicles#get_localizations'
+      post 'update_positions/',to: 'vehicles#update_positions'
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

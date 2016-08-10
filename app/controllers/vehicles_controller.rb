@@ -1,6 +1,6 @@
 class VehiclesController < ApplicationController
   before_action :set_vehicle, only: [:show, :edit, :update, :destroy,:get_localizations]
-  protect_from_forgery :except => [:get_localizations]
+  protect_from_forgery :except => [:get_localizations,:update_positions_params]
 
   # GET /vehicles
   # GET /vehicles.json
@@ -67,6 +67,11 @@ class VehiclesController < ApplicationController
     render json: @localizations
   end
 
+  def update_positions
+    @localization = VehicleLocalization.create(update_positions_params)
+    render json: @localization
+  end
+
 
 
   private
@@ -78,5 +83,9 @@ class VehiclesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def vehicle_params
       params.fetch(:vehicle, {})
+    end
+
+    def update_positions_params
+      params.require(:vehicle).permit(:id,:vehicle_id,:lat,:lng)
     end
 end
